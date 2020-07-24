@@ -130,31 +130,6 @@ class Game:
             titan.attack()
             titan.move()
 
-    # def titan_move(self, initial):
-    #     titans_array = self.grid.get_titans(0, 0, [])
-    #     if 7 < (time.time() - initial) % 20 < 7.05:
-    #         if self.moving:
-    #             for titan in titans_array:
-    #                 if titan.__class__.__name__ == "Skeleton":
-    #                     titan.move()
-    #
-    #     if 10 < (time.time() - initial) % 20 < 10.05:
-    #         if self.moving:
-    #             for titan in titans_array:
-    #                 if titan.__class__.__name__ == "Elf":
-    #                     titan.move()
-    #     if 13 < (time.time() - initial) % 20 < 13.05:
-    #         if self.moving:
-    #             for titan in titans_array:
-    #                 if titan.__class__.__name__ == "Orc":
-    #                     titan.move()
-    #     if 16 < (time.time() - initial) % 20 < 16.05:
-    #         if self.moving:
-    #             for titan in titans_array:
-    #                 if titan.__class__.__name__ == "Dragon":
-    #                     titan.move()
-    #         self.moving = True
-
     def titan_attack(self, initial):
         titans_array = self.grid.get_titans(0, 0, [])
         if 7 < (time.time() - initial) % 20 < 7.05:
@@ -204,7 +179,7 @@ class Game:
             fps.tick(30)
             if self.gameover:
                 after_game = AfterGame(self.screen, self.name, int(time.time() - initial), self.menu)
-                after_game.winner()
+                after_game.game_over()
                 after_game.setup()
                 print("GAME OVER")
                 break
@@ -324,14 +299,18 @@ class AfterGame:
                     # --- cursor events ---
                     if self.main_screen.screen_state == "game_over":
                         if self.cursor.colliderect(self.menu_button):
-                            menu.MenuScreen()
+                            menu_screen = menu.MenuScreen()
+                            menu_screen.menu()
+                            menu_screen.start_game()
                     elif self.main_screen.screen_state == "winner":
                         if self.cursor.colliderect(self.menu_button):
-                            menu.MenuScreen()
+                            menu_screen = menu.MenuScreen()
+                            menu_screen.menu()
+                            menu_screen.start_game()
             # --- graphics ---
             if self.main_screen.screen_state == "game_over":
                 self.menu_button.update(self.screen, self.cursor)
-                self.screen.blit(self.shield, (195, 275))  # shield
+                self.screen.blit(self.shield, (190, 275))  # shield
             elif self.main_screen.screen_state == "winner":
                 self.menu_button.update(self.screen, self.cursor)
-                self.screen.blit(self.trophy, (195, 275))  # trophy
+                self.screen.blit(self.trophy, (190, 275))  # trophy
